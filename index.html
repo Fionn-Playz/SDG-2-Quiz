@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDG 2 Quiz</title>
+    <title>History Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,220 +19,193 @@
         }
     </script>
     <style>
-        /* --- Global & Background Styles --- */
+        /*
+         * Custom styles for specific elements not fully covered by Tailwind,
+         * or for overriding default behaviors for a more specific look.
+         */
 
         body {
+            /* Ensure the body takes full viewport height and allows flexbox centering */
             min-height: 100vh;
+            /* Gradient Background: bottom left blue to top right pink */
             background: linear-gradient(to top right, #3b82f6, #ec4899); 
         }
 
         /* General styling for question text */
         .question-text {
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-            color: #333;
-            margin-bottom: 1.5rem;
+            font-size: 1.25rem; /* Equivalent to text-xl */
+            line-height: 1.75rem; /* Equivalent to leading-7 */
+            color: #333; /* Darker gray for readability */
+            margin-bottom: 1.5rem; /* Equivalent to mb-6 */
         }
 
-        /* --- Option Styles (The Blue Rectangle) --- */
-
-        /* Blue rectangle/border around the whole options container */
-        .options-container {
-            text-align: left;
-            padding: 1rem; /* Padding inside the blue box */
-            border: 3px solid #3b82f6; /* Blue border */
-            border-radius: 0.75rem; /* Slightly more rounded corners */
-            background-color: #f0f8ff; /* Very light blue background for contrast */
-            box-shadow: 0 4px 12px rgba(0, 0, 255, 0.1); /* Subtle shadow */
-        }
+        /* Container for options (multiple choice, true/false) */
+        .options-container {
+            text-align: left; /* Align options to the left */
+        }
 
         /* Individual option labels */
         .option-label {
-            display: block;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem 1rem;
-            border: 1px solid #c0c0c0; /* Slightly darker light gray border */
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            background-color: #ffffff; /* White background for individual options */
-            color: #333;
-            font-size: 1rem;
+            display: block; /* Make each label take full width */
+            margin-bottom: 0.75rem; /* Space between options */
+            padding: 0.75rem 1rem; /* Padding inside the label */
+            border: 1px solid #e0e0e0; /* Light gray border */
+            border-radius: 0.5rem; /* Rounded corners */
+            cursor: pointer; /* Indicate interactivity */
+            transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+            background-color: #f8f8f8; /* Slightly off-white background */
+            color: #333; /* Text color */
+            font-size: 1rem; /* Base font size */
         }
 
         .option-label:hover {
-            background-color: #e6f0ff; /* Very light blue background on hover */
-            border-color: #3b82f6; /* Blue border on hover */
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #e0e0e0; /* Lighter background on hover */
+            border-color: #c0c0c0; /* Darker border on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
         }
-        
-        /* --- True/False Specific Colors --- */
-        .option-label.is-true {
-            background-color: #e6ffe6; /* Light green background */
-            color: #155724; /* Dark green text */
-            border-color: #4CAF50; /* Green border */
-        }
-        .option-label.is-false {
-            background-color: #ffe6e6; /* Light red background */
-            color: #721c24; /* Dark red text */
-            border-color: #F44336; /* Red border */
-        }
 
         /* Hide default radio buttons visually but keep them functional */
         .option-label input[type="radio"] {
-            appearance: none;
-            width: 1.25rem;
+            appearance: none; /* Remove default radio button styling */
+            width: 1.25rem; /* Custom size for radio button */
             height: 1.25rem;
-            border: 2px solid #a0a0a0;
-            border-radius: 50%;
-            margin-right: 0.75rem;
-            vertical-align: middle;
-            outline: none;
-            cursor: pointer;
-            position: relative;
-            flex-shrink: 0;
+            border: 2px solid #a0a0a0; /* Border for custom radio */
+            border-radius: 50%; /* Make it round */
+            margin-right: 0.75rem; /* Space between custom radio and text */
+            vertical-align: middle; /* Align with text */
+            outline: none; /* Remove outline on focus */
+            cursor: pointer; /* Indicate interactivity */
+            position: relative; /* For custom checked state */
+            flex-shrink: 0; /* Prevent shrinking in flex container */
         }
 
         /* Custom checked state for radio buttons */
         .option-label input[type="radio"]:checked {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #007bff; /* Blue fill when checked */
+            border-color: #007bff; /* Blue border when checked */
         }
 
         /* Inner dot for custom radio button when checked */
         .option-label input[type="radio"]:checked::before {
             content: '';
             display: block;
-            width: 0.625rem;
+            width: 0.625rem; /* Size of the inner dot */
             height: 0.625rem;
-            background-color: white;
+            background-color: white; /* White dot */
             border-radius: 50%;
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* Center the dot */
         }
 
         /* Style for the short answer input field */
+        /* FIX: Adjusted CSS to allow full width via Tailwind class */
         .short-answer-input {
-            padding: 0.75rem 1rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 1rem; /* Padding inside input */
+            margin-bottom: 1.5rem; /* Space below input */
+            border: 1px solid #ddd; /* Light gray border */
+            border-radius: 0.5rem; /* Rounded corners */
+            font-size: 1rem; /* Base font size */
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            /* Added margin for short answer field to sit inside the blue box area */
-            margin-left: 1rem;
-            margin-right: 1rem;
-            width: calc(100% - 2rem);
         }
 
         .short-answer-input:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-            outline: none;
+            border-color: #007bff; /* Blue border on focus */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Focus ring effect */
+            outline: none; /* Remove default outline */
         }
 
         /* Utility class to hide elements */
         .hidden {
-            display: none !important;
+            display: none !important; /* Force hide */
         }
 
         /* Feedback message styling (correct/incorrect) */
         #feedback {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 0.5rem;
+            margin-top: 1.5rem; /* Space above feedback */
+            padding: 1rem; /* Padding inside feedback box */
+            border-radius: 0.5rem; /* Rounded corners */
             font-weight: bold;
-            font-size: 1.125rem;
+            font-size: 1.125rem; /* text-lg */
         }
 
         .correct {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #d4edda; /* Light green background */
+            color: #155724; /* Dark green text */
+            border: 1px solid #c3e6cb; /* Green border */
         }
 
         .incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #f8d7da; /* Light red background */
+            color: #721c24; /* Dark red text */
+            border: 1px solid #f5c6cb; /* Red border */
         }
 
         /* Result display at the end */
         #result {
-            margin-top: 1.5rem;
-            font-size: 1.5rem;
+            margin-top: 1.5rem; /* Space above result */
+            font-size: 1.5rem; /* text-2xl */
             font-weight: bold;
-            color: #333;
+            color: #333; /* Dark gray text */
         }
-        
-        /* New styles for the mute button container and button */
-        .header-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        #mute-btn {
-            background-color: #f1f1f1;
-            color: #333;
-            font-size: 0.875rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 9999px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        #mute-btn:hover {
-            background-color: #e0e0e0;
-        }
 
         /* Responsive adjustments for smaller screens */
         @media (max-width: 640px) {
             .quiz-container {
-                padding: 1rem;
+                padding: 1rem; /* Smaller padding on small screens */
             }
+
             h1 {
-                font-size: 2rem;
+                font-size: 2rem; /* Adjust title size for small screens */
             }
+
             .question-text {
-                font-size: 1.1rem;
+                font-size: 1.1rem; /* Adjust question text size */
             }
+
             .option-label {
-                padding: 0.6rem 0.8rem;
-                font-size: 0.95rem;
+                padding: 0.6rem 0.8rem; /* Smaller padding for options */
+                font-size: 0.95rem; /* Smaller font size for options */
             }
+
             .short-answer-input {
-                padding: 0.6rem 0.8rem;
+                padding: 0.6rem 0.8rem; /* Smaller padding for input */
             }
+
             button {
-                width: 100%;
-                padding: 0.8rem 1.2rem;
+                width: 100%; /* Full width buttons on small screens */
+                padding: 0.8rem 1.2rem; /* Slightly smaller button padding */
             }
         }
+
+        /* Custom styles for the new audio controls */
+        #audio-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Align to the right/end of the quiz container */
+            margin-bottom: 1rem; /* Space between controls and quiz title */
+            padding-right: 0.5rem; /* Minor padding for aesthetics */
+            gap: 10px; /* Space between elements */
+        }
     </style>
 </head>
 <body class="font-inter">
-    
-    <audio id="bg-song" src="song.mp3" autoplay loop volume="0.5"></audio>
-
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-md md:max-w-lg lg:max-w-xl">
             
-            <div class="header-controls">
-                <h1 class="text-3xl sm:text-4xl font-bold text-blue-800">SDG 2 Quiz</h1>
-                <button id="mute-btn" onclick="toggleMute()">
-                    🔇 Mute Music
+            <div id="audio-controls">
+                <button id="mute-btn" class="text-gray-600 hover:text-blue-800 transition duration-150 ease-in-out p-1 rounded-full bg-gray-100 hover:bg-gray-200" title="Mute/Unmute">
+                    <span id="mute-icon" class="text-xl">🔊</span>
                 </button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5" class="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg">
             </div>
-            
+                        <h1 class="text-3xl sm:text-4xl font-bold text-center text-blue-800 mb-6">History Quiz</h1>
+
             <div id="quiz" class="space-y-4">
-            </div>
+                </div>
 
             <div class="flex flex-col sm:flex-row justify-center mt-6 space-y-3 sm:space-y-0 sm:space-x-4">
                 <button id="submit-btn" class="bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 transition duration-300 ease-in-out transform hover:scale-105">
@@ -244,43 +217,45 @@
             </div>
 
             <div id="feedback" class="hidden mt-6 p-4 rounded-lg text-center font-bold text-lg">
-            </div>
+                </div>
 
             <div id="result" class="hidden mt-6 p-4 rounded-lg text-center font-bold text-xl text-gray-700">
-            </div>
+                </div>
 
             <div class="text-center text-gray-500 text-sm mt-8">
-                Made by Fionn Syam and Emil Sharafeev
+                Made by Fionn Syam
             </div>
         </div>
     </div>
+
+    <audio id="background-song" src="song.mp3" loop preload="auto"></audio>
 
     <script>
         // Define the quiz questions as an array of objects
         const quizQuestions = [
             {
-                question: "Who established the Mughal Empire in India by defeating Ibrahim Lodi?",
+                question: "Who converted india to a Empire",
                 type: 'multiple_choice',
-                options: ["Humayun", "Akbar", "Babur", "Shah Jahan"],
+                options: ["Babur", "Akbar", "Ibrahim Lodi"],
                 answer: "Babur"
             },
             {
-                question: "True or False: A major reason Babur won the First Battle of Panipat was his superior numbers.",
+                question: "True or False: The reasan babur one was with numbers",
                 type: 'true_false',
                 answer: "False"
             },
             {
-                question: "What was the battle between Babur and Ibrahim Lodi called",
+                question: "Wat was the battle between Akbar and Ibrahim Lodi called",
                 type: 'short_answer',
-                answer: "First Battle of Panipat"
+                answer: "The Battle of Panipat"
             },
             {
-                question: "How long did Emperor Akbar reign (in years, approximately)?",
+                question: "How long did Akbar Reign in years",
                 type: 'short_answer',
                 answer: "49"
             },
             {
-                question: "How old was Akbar when he was crowned Emperor?",
+                question: "How old was Akbar when he was crowned",
                 type: 'multiple_choice',
                 options: ["10", "11", "12", "13"],
                 answer: "13"
@@ -289,9 +264,9 @@
 
 
         // Initialize quiz state variables
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let shuffledQuestions = [];
+        let currentQuestionIndex = 0; // Tracks the current question being displayed
+        let score = 0; // Stores the user's score
+        let shuffledQuestions = []; // Array to hold questions in random order
 
         // Get references to DOM elements
         const quizDiv = document.getElementById('quiz');
@@ -299,31 +274,99 @@
         const nextButton = document.getElementById('next-btn');
         const feedbackDiv = document.getElementById('feedback');
         const resultDiv = document.getElementById('result');
-        const bgSong = document.getElementById('bg-song');
+
+        // NEW AUDIO ELEMENT REFERENCES
+        const backgroundSong = document.getElementById('background-song');
         const muteButton = document.getElementById('mute-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const muteIcon = document.getElementById('mute-icon');
+
+        // State variable for tracking the volume level before muting
+        let lastVolume = volumeSlider.value;
+
 
         // Event listener to start the quiz when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', startGame);
-        
-        /**
-         * Toggles the mute state of the background music and updates the button text.
-         */
-        function toggleMute() {
-            if (bgSong.muted) {
-                bgSong.muted = false;
-                muteButton.innerHTML = '🔇 Mute Music';
-            } else {
-                bgSong.muted = true;
-                muteButton.innerHTML = '🔊 Unmute Music';
+        document.addEventListener('DOMContentLoaded', () => {
+            startGame();
+            // Start the song playback. Note: Modern browsers often block autoplay until user interaction.
+            // A simple way to trigger it is to attempt playback immediately.
+            // It will often succeed if the user interacts (e.g., clicks the quiz body) after the page loads.
+            backgroundSong.volume = parseFloat(lastVolume); // Set initial volume
+            backgroundSong.play().catch(error => {
+                // Console log or display a message if autoplay is blocked, advising user interaction
+                console.log("Autoplay blocked. Click anywhere to start the music.");
+            });
+        });
+
+        // Event listener to ensure music starts on the first interaction (a common workaround)
+        document.body.addEventListener('click', function attemptPlay() {
+            if (backgroundSong.paused) {
+                backgroundSong.play().catch(error => {
+                    // Still blocked, maybe a more strict environment
+                });
             }
-        }
-        window.toggleMute = toggleMute;
+            // Remove the listener once the audio successfully starts
+            if (!backgroundSong.paused) {
+                document.body.removeEventListener('click', attemptPlay);
+            }
+        });
+
+
+        /* -------------------------------------- */
+        /* --------- NEW AUDIO FUNCTIONS -------- */
+        /* -------------------------------------- */
+
+        /**
+         * Toggles the mute state of the background music.
+         */
+        muteButton.addEventListener('click', () => {
+            if (backgroundSong.muted) {
+                // UNMUTE
+                backgroundSong.muted = false;
+                // Restore the volume slider to its last position and volume
+                volumeSlider.value = lastVolume; 
+                backgroundSong.volume = parseFloat(lastVolume); 
+                muteIcon.textContent = '🔊'; // Full volume icon
+            } else {
+                // MUTE
+                // Save current volume before muting
+                lastVolume = backgroundSong.volume; 
+                backgroundSong.muted = true;
+                // Move slider to 0 visually
+                volumeSlider.value = 0; 
+                muteIcon.textContent = '🔇'; // Muted icon
+            }
+        });
+
+        /**
+         * Adjusts the volume based on the slider position.
+         */
+        volumeSlider.addEventListener('input', (event) => {
+            const newVolume = parseFloat(event.target.value);
+            backgroundSong.volume = newVolume;
+
+            // Update the mute state and icon based on slider value
+            if (newVolume === 0) {
+                backgroundSong.muted = true;
+                muteIcon.textContent = '🔇';
+            } else {
+                backgroundSong.muted = false;
+                lastVolume = newVolume; // Save this as the new last known volume
+                muteIcon.textContent = '🔊';
+            }
+        });
+        
+        /* -------------------------------------- */
+        /* -------- END NEW AUDIO FUNCTIONS ----- */
+        /* -------------------------------------- */
 
 
         /**
-         * Initializes the quiz.
+         * Initializes the quiz: shuffles questions, resets score and index,
+         * and displays the first question.
          */
         function startGame() {
+            // Create a shallow copy of the quizQuestions array to avoid modifying the original
             shuffledQuestions = [...quizQuestions];
 
             // Fisher-Yates shuffle algorithm to randomize question order
@@ -332,28 +375,35 @@
                 [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
             }
 
+            // Reset quiz state
             currentQuestionIndex = 0;
             score = 0;
 
-            submitButton.classList.remove('hidden');
-            nextButton.classList.add('hidden');
-            feedbackDiv.classList.add('hidden');
-            resultDiv.classList.add('hidden');
+            // Ensure correct button visibility and clear previous feedback/results
+            submitButton.classList.remove('hidden'); // Show submit button
+            nextButton.classList.add('hidden');    // Hide next button
+            feedbackDiv.classList.add('hidden');   // Hide feedback
+            resultDiv.classList.add('hidden');     // Hide results
 
+            // Display the first question
             displayQuestion();
         }
 
         /**
-         * Displays the current question.
+         * Displays the current question based on `currentQuestionIndex`.
+         * Renders different input types (radio, text) based on question type.
          */
         function displayQuestion() {
+            // Clear previous feedback and reset its styling
             feedbackDiv.classList.add('hidden');
             feedbackDiv.textContent = '';
-            feedbackDiv.className = 'hidden mt-6 p-4 rounded-lg text-center font-bold text-lg';
+            feedbackDiv.className = 'hidden mt-6 p-4 rounded-lg text-center font-bold text-lg'; // Reset classes
 
+            // Adjust button visibility for a new question
             submitButton.classList.remove('hidden');
             nextButton.classList.add('hidden');
 
+            // Check if there are more questions to display
             if (currentQuestionIndex < shuffledQuestions.length) {
                 const q = shuffledQuestions[currentQuestionIndex];
                 let questionHtml = `
@@ -363,42 +413,39 @@
                     </div>
                 `;
 
-                // Options container for multiple choice and true/false
-                if (q.type === 'multiple_choice' || q.type === 'true_false') {
-                    questionHtml += '<div class="options-container">';
-                    const options = q.type === 'true_false' ? ["True", "False"] : q.options;
-
-                    options.forEach((option) => {
-                        let classModifier = '';
-                        // Apply green/red classes for True/False questions only
-                        if (q.type === 'true_false') {
-                            if (option === 'True') {
-                                classModifier = 'is-true';
-                            } else if (option === 'False') {
-                                classModifier = 'is-false';
-                            }
-                        }
-
-                        questionHtml += `
-                            <label class="option-label flex items-center ${classModifier}">
-                                <input type="radio" name="answer" value="${option}" class="mr-3">
-                                <span>${option}</span>
-                            </label>
-                        `;
-                    });
-                    questionHtml += '</div>';
-                }
-                 else if (q.type === 'short_answer') {
-                    // Short answer is wrapped in a container to respect the blue box styling
-                    questionHtml += `
-                        <div class="options-container">
-                            <input type="text" class="short-answer-input" id="short-answer" placeholder="Type your answer here">
-                        </div>
-                    `;
-                }
-
-                quizDiv.innerHTML = questionHtml;
+                // Render options based on question type
+                if (q.type === 'multiple_choice') {
+                    questionHtml += '<div class="options-container">';
+                    q.options.forEach((option) => {
+                        questionHtml += `
+                            <label class="option-label flex items-center">
+                                <input type="radio" name="answer" value="${option}" class="mr-3">
+                                <span>${option}</span>
+                            </label>
+                        `;
+                    });
+                    questionHtml += '</div>';
+                } else if (q.type === 'true_false') {
+                    questionHtml += `
+                        <div class="options-container">
+                            <label class="option-label flex items-center">
+                                <input type="radio" name="answer" value="True" class="mr-3">
+                                <span>True</span>
+                            </label>
+                            <label class="option-label flex items-center">
+                                <input type="radio" name="answer" value="False" class="mr-3">
+                                <span>False</span>
+                            </label>
+                        </div>
+                    `;
+                } else if (q.type === 'short_answer') {
+                    questionHtml += `
+                        <input type="text" class="short-answer-input block w-full p-3 border border-gray-300 rounded-lg text-lg focus:ring-blue-500 focus:border-blue-500" id="short-answer" placeholder="Type your answer here">
+                    `;
+                }
+                quizDiv.innerHTML = questionHtml; // Update the quiz container with the new question
             } else {
+                // If no more questions, show the final results
                 showResults();
             }
         }
@@ -406,12 +453,13 @@
         // Add event listeners for the submit and next buttons
         submitButton.addEventListener('click', checkAnswer);
         nextButton.addEventListener('click', () => {
-            currentQuestionIndex++;
-            displayQuestion();
+            currentQuestionIndex++; // Move to the next question
+            displayQuestion();     // Display the next question
         });
 
         /**
-         * Checks the user's answer against the correct answer.
+         * Checks the user's answer against the correct answer for the current question.
+         * Updates score and displays feedback.
          */
         function checkAnswer() {
             const q = shuffledQuestions[currentQuestionIndex];
@@ -420,30 +468,27 @@
             // Get user's answer based on question type
             if (q.type === 'multiple_choice' || q.type === 'true_false') {
                 const selectedOption = quizDiv.querySelector('input[name="answer"]:checked');
-                userAnswer = selectedOption ? selectedOption.value : null;
+                userAnswer = selectedOption ? selectedOption.value : null; // Get value or null if nothing selected
             } else if (q.type === 'short_answer') {
-                userAnswer = quizDiv.querySelector('#short-answer').value.trim();
+                userAnswer = quizDiv.querySelector('#short-answer').value.trim(); // Get trimmed text input
             }
 
             let isCorrect = false;
             // Compare user's answer (case-insensitive) with the correct answer
+            // Trim whitespace from user answer to handle accidental spaces in short answers
             if (userAnswer && userAnswer.trim().toLowerCase() === q.answer.toLowerCase()) {
                 isCorrect = true;
             }
-            // Added check to accept "Battle of Panipat" for the short answer question (lenient check)
-            if (!isCorrect && q.question.includes("Babur and Ibrahim Lodi") && userAnswer.trim().toLowerCase() === "battle of panipat") {
-                isCorrect = true; 
-            }
 
             // Display feedback
             feedbackDiv.classList.remove('hidden');
             if (isCorrect) {
-                feedbackDiv.textContent = "Correct! ✅";
-                feedbackDiv.className = 'correct mt-6 p-4 rounded-lg text-center font-bold text-lg';
-                score++;
+                feedbackDiv.textContent = "Correct!";
+                feedbackDiv.className = 'correct mt-6 p-4 rounded-lg text-center font-bold text-lg'; // Apply correct styling
+                score++; // Increment score if correct
             } else {
-                feedbackDiv.textContent = `Incorrect. ❌ The correct answer was: ${q.answer}`;
-                feedbackDiv.className = 'incorrect mt-6 p-4 rounded-lg text-center font-bold text-lg';
+                feedbackDiv.textContent = `Incorrect. The correct answer was: ${q.answer}`;
+                feedbackDiv.className = 'incorrect mt-6 p-4 rounded-lg text-center font-bold text-lg'; // Apply incorrect styling
             }
 
             // Hide submit button, show next button
@@ -456,26 +501,26 @@
         }
 
         /**
-         * Displays the final quiz results.
+         * Displays the final quiz results, score, and a personalized message.
          */
         function showResults() {
-            quizDiv.innerHTML = '';
-            submitButton.classList.add('hidden');
+            quizDiv.innerHTML = ''; // Clear the quiz content area
+            submitButton.classList.add('hidden'); // Hide buttons
             nextButton.classList.add('hidden');
-            feedbackDiv.classList.add('hidden');
+            feedbackDiv.classList.add('hidden'); // Hide feedback
 
-            resultDiv.classList.remove('hidden');
+            resultDiv.classList.remove('hidden'); // Show results div
 
             let resultText = `<p class="mb-4">You scored ${score} out of ${shuffledQuestions.length}.</p>`;
             // Provide different messages based on performance
             if (score === shuffledQuestions.length) {
-                resultText += "<p class='text-green-600'>Excellent! You got all correct! 🎉</p>";
+                resultText += "<p class='text-green-600'>Excellent! You got all correct!</p>";
             } else if (score >= shuffledQuestions.length * 0.7) {
-                resultText += "<p class='text-blue-600'>Well done! You have a good understanding. 👍</p>";
+                resultText += "<p class='text-blue-600'>Well done! You have a good understanding.</p>";
             } else {
-                resultText += "<p class='text-red-600'>Keep practicing! There's room for improvement. 📚</p>";
+                resultText += "<p class='text-red-600'>Keep practicing! There's room for improvement.</p>";
             }
-            resultDiv.innerHTML = resultText;
+            resultDiv.innerHTML = resultText; // Update results div
         }
     </script>
 </body>
