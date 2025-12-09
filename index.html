@@ -101,7 +101,6 @@
         }
 
         /* Style for the short answer input field */
-        /* FIX: Adjusted CSS to allow full width via Tailwind class */
         .short-answer-input {
             padding: 0.75rem 1rem; /* Padding inside input */
             margin-bottom: 1.5rem; /* Space below input */
@@ -207,7 +206,7 @@
 </head>
 <body class="font-inter">
     
-    <audio id="bg-song" src="song.mp3" loop></audio>
+    <audio id="bg-song" src="song.mp3" autoplay loop volume="0.5"></audio>
 
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-md md:max-w-lg lg:max-w-xl">
@@ -245,7 +244,6 @@
 
     <script>
         // Define the quiz questions as an array of objects
-        // NOTE: Using the corrected historical questions from the previous response.
         const quizQuestions = [
             {
                 question: "Who established the Mughal Empire in India by defeating Ibrahim Lodi?",
@@ -294,22 +292,6 @@
         // Event listener to start the quiz when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', startGame);
         
-        // Try to play music automatically when the quiz starts
-        document.addEventListener('DOMContentLoaded', () => {
-            // Note: Many browsers block autoplay unless user interaction has occurred.
-            // This is a common workaround: attempt to play upon the first user click/interaction.
-            document.body.addEventListener('click', attemptPlay, { once: true });
-        });
-        
-        function attemptPlay() {
-            bgSong.volume = 0.5; // Set volume lower so it's not too intrusive
-            bgSong.play().catch(error => {
-                // If autoplay fails, console log or handle error (e.g., show a 'Play Music' button)
-                console.log("Autoplay blocked. User must interact to start music.");
-            });
-        }
-
-
         /**
          * Toggles the mute state of the background music and updates the button text.
          */
@@ -443,11 +425,10 @@
             if (userAnswer && userAnswer.trim().toLowerCase() === q.answer.toLowerCase()) {
                 isCorrect = true;
             }
-            // Added check to accept "Battle of Panipat" for the short answer question
+            // Added check to accept "Battle of Panipat" for the short answer question (lenient check)
             if (!isCorrect && q.question.includes("Babur and Ibrahim Lodi") && userAnswer.trim().toLowerCase() === "battle of panipat") {
                 isCorrect = true; 
             }
-
 
             // Display feedback
             feedbackDiv.classList.remove('hidden');
